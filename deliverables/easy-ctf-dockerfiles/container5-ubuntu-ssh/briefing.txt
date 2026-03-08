@@ -1,0 +1,28 @@
+=====================================================
+  OPERATION CYBER STORM — INCIDENT RESPONSE CONSOLE
+  FICTIONAL-CORP // ANALYST WORKSTATION ACCESS
+=====================================================
+
+You have SSH'd into the analyst workstation recovered
+from the FICTIONAL-CORP incident.
+
+Files available in this directory:
+
+  access.log   - Web server access log from the incident window
+                 (October 2024 — 30 days of entries)
+
+  .bash_history - Shell history recovered from the compromised account
+                  (hidden file — you may need to look carefully)
+
+STAGE 5 TASK:
+  Analyse access.log for anomalous activity.
+  The attacker left a distinctive trace in one log entry.
+  Use grep or awk to hunt for the outlier.
+
+STAGE 6 TASK:
+  The attacker established persistence on this system.
+  A hidden file was planted as a backdoor marker.
+  Find it using the appropriate Linux command.
+
+Good hunting.
+=====================================================

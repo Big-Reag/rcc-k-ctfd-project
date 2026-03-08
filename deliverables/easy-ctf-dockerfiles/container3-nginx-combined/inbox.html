@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FICTIONAL-CORP Webmail</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f0f2f5; color: #333; }
+
+  /* Topbar */
+  .topbar { background: #1b2a4a; color: white; padding: 12px 24px; display: flex;
+            align-items: center; justify-content: space-between; }
+  .topbar .logo { font-weight: bold; font-size: 1.1em; letter-spacing: 1px; color: #c8920a; }
+  .topbar .user { font-size: 0.85em; color: #8a95a3; }
+
+  /* Layout */
+  .layout { display: flex; height: calc(100vh - 46px); }
+
+  /* Sidebar */
+  .sidebar { width: 200px; background: #fff; border-right: 1px solid #dde3ec; padding: 16px 0; flex-shrink: 0; }
+  .sidebar-item { padding: 10px 20px; cursor: pointer; font-size: 0.9em; color: #555; border-left: 3px solid transparent; }
+  .sidebar-item.active { background: #eef2fa; color: #1b2a4a; border-left-color: #c8920a; font-weight: bold; }
+  .sidebar-item .count { float: right; background: #e94560; color: white; border-radius: 10px;
+                          padding: 1px 7px; font-size: 0.75em; }
+
+  /* Inbox panel */
+  .inbox-panel { width: 320px; border-right: 1px solid #dde3ec; background: #fff; overflow-y: auto; flex-shrink: 0; }
+  .inbox-header { padding: 16px 20px; border-bottom: 1px solid #eee; font-weight: bold; color: #1b2a4a; font-size: 0.95em; }
+  .email-row { padding: 14px 20px; border-bottom: 1px solid #f0f2f5; cursor: pointer; background: #eef4ff; }
+  .email-row:hover { background: #dce8ff; }
+  .email-row .from { font-weight: bold; font-size: 0.9em; color: #1b2a4a; }
+  .email-row .subject { font-size: 0.88em; color: #333; margin: 3px 0; }
+  .email-row .preview { font-size: 0.8em; color: #888; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .email-row .date { font-size: 0.75em; color: #aaa; float: right; margin-top: -18px; }
+
+  /* Email viewer */
+  .email-viewer { flex: 1; overflow-y: auto; padding: 30px 40px; background: #fff; }
+  .email-meta { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid #eee; }
+  .email-meta h2 { font-size: 1.2em; color: #1b2a4a; margin-bottom: 12px; }
+  .meta-row { display: flex; margin-bottom: 5px; font-size: 0.88em; }
+  .meta-label { width: 80px; color: #888; flex-shrink: 0; }
+  .meta-value { color: #333; }
+  .meta-value.warn { color: #c0392b; font-weight: bold; }
+
+  /* Email body */
+  .email-body { background: #fff; border: 1px solid #eee; border-radius: 4px; padding: 30px; margin-bottom: 20px; }
+  .email-body .corp-header { background: #1b2a4a; color: white; padding: 16px 24px; border-radius: 4px 4px 0 0;
+                              margin: -30px -30px 20px -30px; font-weight: bold; letter-spacing: 1px; }
+  .email-body p { line-height: 1.7; color: #444; margin-bottom: 12px; font-size: 0.95em; }
+  .email-body .cta { display: inline-block; background: #e94560; color: white; padding: 10px 24px;
+                     border-radius: 4px; text-decoration: none; font-size: 0.9em; margin: 10px 0; }
+  .email-body .fine-print { font-size: 0.78em; color: #aaa; margin-top: 20px; border-top: 1px solid #eee; padding-top: 12px; }
+
+  /* Raw headers toggle */
+  .headers-toggle { margin-bottom: 8px; }
+  .toggle-btn { background: #1b2a4a; color: #c8920a; border: none; padding: 8px 18px;
+                border-radius: 4px; cursor: pointer; font-size: 0.85em; font-family: monospace; }
+  .toggle-btn:hover { background: #2e4070; }
+  .raw-headers { display: none; background: #0d1117; color: #58a6ff; font-family: 'Courier New', monospace;
+                 font-size: 0.82em; padding: 20px; border-radius: 4px; white-space: pre-wrap;
+                 border: 1px solid #30363d; line-height: 1.6; }
+  .raw-headers .flag-line { color: #00ff88; font-weight: bold; }
+  .raw-headers .warn-line { color: #ff9f43; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo">&#9993; FICTIONAL-CORP WEBMAIL</span>
+  <span class="user">Logged in as: j.analyst@fictionalcorp.com</span>
+</div>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-item active">Inbox <span class="count">1</span></div>
+    <div class="sidebar-item">Sent</div>
+    <div class="sidebar-item">Drafts</div>
+    <div class="sidebar-item">Trash</div>
+  </div>
+
+  <!-- Inbox list -->
+  <div class="inbox-panel">
+    <div class="inbox-header">Inbox (1 unread)</div>
+    <div class="email-row">
+      <span class="date">Oct 28</span>
+      <div class="from">IT Security Team</div>
+      <div class="subject">&#x26A0; URGENT — Password Reset Required</div>
+      <div class="preview">Your FICTIONAL-CORP account will be locked in 24 hours...</div>
+    </div>
+  </div>
+
+  <!-- Email viewer -->
+  <div class="email-viewer">
+
+    <div class="email-meta">
+      <h2>&#x26A0; URGENT — Password Reset Required</h2>
+      <div class="meta-row"><span class="meta-label">From:</span>
+        <span class="meta-value">"IT Security Team" &lt;security@fictionalcorp.com&gt;</span></div>
+      <div class="meta-row"><span class="meta-label">Reply-To:</span>
+        <span class="meta-value warn">attacker@evil-domain.net &nbsp;&#x26A0; Domain mismatch</span></div>
+      <div class="meta-row"><span class="meta-label">To:</span>
+        <span class="meta-value">j.analyst@fictionalcorp.com</span></div>
+      <div class="meta-row"><span class="meta-label">Date:</span>
+        <span class="meta-value">Mon, 28 Oct 2024 09:14:03 +0000</span></div>
+    </div>
+
+    <!-- Email body -->
+    <div class="email-body">
+      <div class="corp-header">FICTIONAL-CORP // IT SECURITY OPERATIONS</div>
+      <p>Dear FICTIONAL-CORP Employee,</p>
+      <p>Our systems have detected unusual login activity associated with your account.
+         As a precautionary measure, your account will be <strong>locked within 24 hours</strong>
+         unless you verify your identity and reset your password immediately.</p>
+      <p>Please click the button below to complete the verification process:</p>
+      <a class="cta" href="#">Reset My Password Now</a>
+      <p>If you did not request this action or believe this is an error, please contact
+         the IT helpdesk immediately at helpdesk@fictionalcorp.com.</p>
+      <p>Regards,<br><strong>FICTIONAL-CORP IT Security Operations</strong></p>
+      <div class="fine-print">
+        This is an automated security notification. Do not reply to this email directly.
+        If you need assistance, visit the internal helpdesk portal on the intranet.
+        &copy; 2024 FICTIONAL-CORP. All rights reserved.
+      </div>
+    </div>
+
+    <!-- Raw headers -->
+    <div class="headers-toggle">
+      <button class="toggle-btn" onclick="toggleHeaders()">&#128196; View Raw Headers</button>
+    </div>
+
+    <div class="raw-headers" id="rawHeaders">Delivered-To: j.analyst@fictionalcorp.com
+Received: from mail.totally-legit.com (mail.totally-legit.com [192.168.99.47])
+        by mx.fictionalcorp.com with ESMTP id x7si8823pjb.291
+        for &lt;j.analyst@fictionalcorp.com&gt;;
+        Mon, 28 Oct 2024 09:14:03 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.totally-legit.com (Postfix) with ESMTP id A3F2B1C0E2;
+        Mon, 28 Oct 2024 09:14:01 +0000 (UTC)
+MIME-Version: 1.0
+Content-Type: text/html; charset=utf-8
+Message-ID: &lt;20241028091401.A3F2B1C0E2@mail.totally-legit.com&gt;
+Date: Mon, 28 Oct 2024 09:14:01 +0000 (UTC)
+From: "IT Security Team" &lt;security@fictionalcorp.com&gt;
+<span class="warn-line">Reply-To: attacker@evil-domain.net</span>
+To: j.analyst@fictionalcorp.com
+Subject: =?UTF-8?Q?URGENT_=E2=80=94_Password_Reset_Required?=
+<span class="warn-line">X-Originating-IP: 192.168.99.47</span>
+X-Spam-Status: No, score=-1.2
+X-Spam-Checker-Version: SpamAssassin 3.4.6
+<span class="flag-line">X-Mailer-ID: FLAG{ph1sh1ng_h3ad3r_hunt3d}</span>
+X-Mailer: PHPMailer 6.8.0 (https://github.com/PHPMailer/PHPMailer)
+Content-Transfer-Encoding: quoted-printable</div>
+
+  </div><!-- /email-viewer -->
+</div><!-- /layout -->
+
+<script>
+function toggleHeaders() {
+  const el = document.getElementById('rawHeaders');
+  const btn = document.querySelector('.toggle-btn');
+  if (el.style.display === 'block') {
+    el.style.display = 'none';
+    btn.textContent = '\u{1F4C4} View Raw Headers';
+  } else {
+    el.style.display = 'block';
+    btn.textContent = '\u{1F4C4} Hide Raw Headers';
+  }
+}
+</script>
+
+</body>
+</html>

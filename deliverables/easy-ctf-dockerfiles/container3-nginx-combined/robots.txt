@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /staging/
+Disallow: /backup/
+Disallow: /admin/
+Disallow: /webmail/
