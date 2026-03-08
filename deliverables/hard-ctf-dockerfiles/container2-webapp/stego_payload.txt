@@ -1,0 +1,2 @@
+FLAG{st3g0_m1ss10n_c0mpl3t3}
+Lateral access recovered: ctfuser@CONTAINER_8_IP / Str0ng3rThanY0u
